@@ -1,0 +1,295 @@
+@{
+    ViewData["Title"] = "Events";
+}
+
+<style>
+    /* Events Page Specific Styles */
+    .events-hero {
+        background: linear-gradient(135deg, #000080, #1a1a8a);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+    }
+
+    .events-hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .events-hero p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    /* Search and Filter Section */
+    .search-section {
+        background: #f8f9fa;
+        padding: 3rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .search-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .search-input {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: #000080;
+        box-shadow: 0 0 0 3px rgba(0,0,128,0.1);
+    }
+
+    .filter-btn {
+        background: #000080;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+        background: #ff6600;
+        transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+        background: #ff6600;
+    }
+
+    /* Events Grid */
+    .events-grid {
+        padding: 4rem 0;
+    }
+
+    .event-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        height: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .event-card .card-img-top {
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .event-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    .event-card .card-body {
+        padding: 1.5rem;
+    }
+
+    .event-card .card-title {
+        color: #000080;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .event-card .card-text {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .event-price {
+        color: #ff6600;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .btn-event {
+        background: linear-gradient(45deg, #000080, #1a1a8a);
+        border: none;
+        padding: 10px 24px;
+        border-radius: 25px;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-event:hover {
+        background: linear-gradient(45deg, #ff6600, #ff8533);
+        transform: translateY(-2px);
+    }
+
+    /* Responsive Design */
+    media (max-width: 768px) {
+        .events-hero h1 {
+            font-size: 2rem;
+        }
+        
+        .events-hero p {
+            font-size: 1rem;
+        }
+        
+        .search-card {
+            padding: 1.5rem;
+        }
+        
+        .event-card {
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
+
+<!-- Events Hero Section -->
+<section class="events-hero">
+    <div class="container">
+        <h1>Discover Amazing Events</h1>
+        <p>Find concerts, theatre shows, and cultural events happening across Sri Lanka</p>
+    </div>
+</section>
+
+<!-- Search and Filter Section -->
+<section class="search-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="search-card">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control search-input" placeholder="Search events...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control search-input">
+                                <option>All Categories</option>
+                                <option>Concerts</option>
+                                <option>Theatre</option>
+                                <option>Cultural</option>
+                                <option>Sports</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control search-input">
+                                <option>All Locations</option>
+                                <option>Colombo</option>
+                                <option>Kandy</option>
+                                <option>Galle</option>
+                                <option>Negombo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn filter-btn w-100">Search</button>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="btn filter-btn active">All Events</button>
+                                <button class="btn filter-btn">This Week</button>
+                                <button class="btn filter-btn">This Month</button>
+                                <button class="btn filter-btn">Free Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events Grid -->
+<section class="events-grid">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Event Card 1 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card event-card">
+                    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                         class="card-img-top" alt="Concert Night">
+                    <div class="card-body">
+                        <h5 class="card-title">Concert Night</h5>
+                        <p class="card-text">
+                            <i class="fas fa-calendar-alt me-2 text-primary"></i>March 15, 2025<br>
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Nelum Pokuna Theatre<br>
+                            <i class="fas fa-clock me-2 text-primary"></i>7:00 PM - 10:00 PM
+                        </p>
+                        <div class="event-price">Rs. 2,500</div>
+                        <a href="#" class="btn btn-event">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event Card 2 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card event-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                         class="card-img-top" alt="Theatre Play">
+                    <div class="card-body">
+                        <h5 class="card-title">Theatre Play</h5>
+                        <p class="card-text">
+                            <i class="fas fa-calendar-alt me-2 text-primary"></i>March 22, 2025<br>
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Lionel Wendt Theatre<br>
+                            <i class="fas fa-clock me-2 text-primary"></i>6:30 PM - 9:30 PM
+                        </p>
+                        <div class="event-price">Rs. 1,800</div>
+                        <a href="#" class="btn btn-event">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event Card 3 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card event-card">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                         class="card-img-top" alt="Cultural Festival">
+                    <div class="card-body">
+                        <h5 class="card-title">Cultural Festival</h5>
+                        <p class="card-text">
+                            <i class="fas fa-calendar-alt me-2 text-primary"></i>March 29, 2025<br>
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Independence Square<br>
+                            <i class="fas fa-clock me-2 text-primary"></i>4:00 PM - 8:00 PM
+                        </p>
+                        <div class="event-price">Free</div>
+                        <a href="#" class="btn btn-event">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event Card 4 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card event-card">
+                    <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                         class="card-img-top" alt="Music Concert">
+                    <div class="card-body">
+                        <h5 class="card-title">Music Concert</h5>
+                        <p class="card-text">
+                            <i class="fas fa-calendar-alt me-2 text-primary"></i>April 5, 2025<br>
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Galle Face Green<br>
+                            <i class="fas fa-clock me-2 text-primary"></i>6:00 PM - 11:00 PM
+                        </p>
+                        <div class="event-price">Rs. 3,000</div>
+                        <a href="#" class="btn btn-event">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

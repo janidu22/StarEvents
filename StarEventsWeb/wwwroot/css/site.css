@@ -1,0 +1,20 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1; /* pushes footer down */
+}
+
+footer {
+    background-color: #001f3f; /* navy blue */
+    color: white;
+    padding: 20px 0;
+}

@@ -1,0 +1,144 @@
+﻿
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+        }
+
+        .navbar {
+            background-color: #000080;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+
+        .hero {
+            height: 100vh;
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://files.123freevectors.com/wp-content/original/154027-abstract-blue-and-white-background-design.jpg') no-repeat center center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+            .hero h1 {
+                font-size: 3.5rem;
+                font-weight: bold;
+                color: #ff6600;
+            }
+
+        .section-title {
+            color: #000080;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: none;
+            transition: transform 0.3s;
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+            }
+
+        .footer {
+            background-color: #000080;
+            color: white;
+            padding: 30px 0;
+        }
+
+        .btn-orange {
+            background-color: #ff6600;
+            color: white;
+        }
+
+            .btn-orange:hover {
+                background-color: #e65c00;
+                color: white;
+            }
+    </style>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Experience The Best Events</h1>
+            <p class="lead">Concerts | Theatre | Cultural Shows</p>
+            <a href="#events" class="btn btn-orange btn-lg mt-3">Explore Events</a>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title">Upcoming Events</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                    <img src="https://images.pexels.com/photos/1387174/pexels-photo-1387174.jpeg" class="card-img-top" alt="Event">
+                        <div class="card-body">
+                            <h5 class="card-title">Concert Night</h5>
+                            <p class="card-text">Join us for a night full of music and fun.</p>
+                            <a href="#" class="btn btn-orange">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                    <img src="https://cdn.britannica.com/03/96303-050-C2899EB3/performance-opening-Globe-Theatre-London-June-12-1997.jpg" class="card-img-top" alt="Event">
+                        <div class="card-body">
+                            <h5 class="card-title">Theatre Play</h5>
+                            <p class="card-text">Experience the drama live on stage.</p>
+                            <a href="#" class="btn btn-orange">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                    <img src="https://www.lankatourexperts.com/wp-content/uploads/2023/07/Sri-Lanka-Culture.webp" class="card-img-top" alt="Event">
+                        <div class="card-body">
+                            <h5 class="card-title">Cultural Fest</h5>
+                            <p class="card-text">Celebrate the colors of culture.</p>
+                            <a href="#" class="btn btn-orange">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="section-title">About Us</h2>
+            <p class="lead">
+                StarEvents Pvt Ltd is Sri Lanka’s leading event management and ticketing platform.
+                We bring concerts, theatre shows, and cultural events closer to you.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title">Contact Us</h2>
+            <p>Have questions? Get in touch with us.</p>
+            <form class="row g-3 justify-content-center">
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Your Name">
+                </div>
+                <div class="col-md-5">
+                    <input type="email" class="form-control" placeholder="Your Email">
+                </div>
+                <div class="col-md-10">
+                    <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+                </div>
+                <div class="col-md-10">
+                    <button class="btn btn-orange w-100">Send Message</button>
+                </div>
+            </form>
+        </div>
+    </section>
