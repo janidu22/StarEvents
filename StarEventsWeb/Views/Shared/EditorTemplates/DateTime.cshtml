@@ -1,0 +1,5 @@
+@model System.DateTime?
+@{
+    var val = Model.HasValue ? Model.Value.ToString("yyyy-MM-ddTHH:mm") : string.Empty; // HTML5 datetime-local format
+}
+<input type="datetime-local" class="form-control" value="@val" name="@ViewData.TemplateInfo.GetFullHtmlFieldName("")" />

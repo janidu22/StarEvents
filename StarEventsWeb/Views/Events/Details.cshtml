@@ -1,0 +1,60 @@
+﻿@model StarEvents.DataAccess.Models.Event
+@{ ViewData["Title"] = "Event Details"; var accent = "#ff6600"; var primary = "#000080"; }
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header text-white d-flex justify-content-between align-items-center" style="background:@primary">
+                <h5 class="mb-0"><i class="fa fa-calendar-day me-2"></i>@Model.Title</h5>
+                <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "Active" : "Inactive")</span>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-muted fw-semibold">Category</div>
+                        <div class="fw-semibold">@Model.Category</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-muted fw-semibold">Venue</div>
+                        <div>@Model.Venue?.Name</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-muted fw-semibold">Starts</div>
+                        <div>@Html.DisplayFor(m => m.StartDateTime)</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-muted fw-semibold">Ends</div>
+                        <div>@Html.DisplayFor(m => m.EndDateTime)</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small text-uppercase text-muted fw-semibold">Ticket Price</div>
+                        <div>LKR @Model.TicketPrice.ToString("N2")</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small text-uppercase text-muted fw-semibold">Total Tickets</div>
+                        <div>@Model.TotalTickets</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small text-uppercase text-muted fw-semibold">Available</div>
+                        <div>@Model.AvailableTickets</div>
+                    </div>
+                    <div class="col-12">
+                        <div class="small text-uppercase text-muted fw-semibold">Description</div>
+                        <p class="mb-0">@Model.Description</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-muted fw-semibold">Created</div>
+                        <div>@Html.DisplayFor(m => m.CreatedAt)</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-muted fw-semibold">Organizer</div>
+                        <div>@Model.Organizer?.CompanyName</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm text-white" style="background:@accent"><i class="fa fa-edit me-1"></i>Edit</a>
+                <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i>Back</a>
+            </div>
+        </div>
+    </div>
+</div>

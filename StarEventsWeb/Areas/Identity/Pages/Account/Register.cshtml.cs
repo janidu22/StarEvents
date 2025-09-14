@@ -127,7 +127,7 @@ namespace StarEventsWeb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var roles = await roleManager.Roles
                 .Select(r => r.Name)
-                .Where(r => r != "Admin")
+                //.Where(r => r != "Admin")
                 .ToArrayAsync();
             RoleNames = roles;
         }
@@ -225,7 +225,7 @@ namespace StarEventsWeb.Areas.Identity.Pages.Account
 
             var roles = await roleManager.Roles
           .Select(r => r.Name)
-          .Where(r => r != "Admin")
+          //.Where(r => r != "Admin")
           .ToArrayAsync();
             RoleNames = roles;
             // If we got this far, something failed, redisplay form

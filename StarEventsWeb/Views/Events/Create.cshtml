@@ -1,0 +1,100 @@
+﻿@model StarEventsWeb.ViewModels.EventFormViewModel
+@{
+    ViewData["Title"] = "Create Event";
+    var accent = "#ff6600"; var primary = "#000080";
+}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border-0">
+            <div class="card-header text-white" style="background:@primary">
+                <h5 class="mb-0"><i class="fa fa-plus-circle me-2"></i>Create Event</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 mb-3" role="alert"></div>
+                    <div class="row g-3">
+                        @if (Model.IsAdmin)
+                        {
+                            <div class="col-md-4">
+                                <label asp-for="OrganizerID" class="form-label fw-semibold">Organizer<span class="text-danger">*</span></label>
+                                <select asp-for="OrganizerID" class="form-select" asp-items="Model.Organizers">
+                                    <option value="">-- Select Organizer --</option>
+                                </select>
+                                <span asp-validation-for="OrganizerID" class="text-danger small"></span>
+                            </div>
+                        }
+                        <div class="col-md-4">
+                            <label asp-for="VenueID" class="form-label fw-semibold">Venue<span class="text-danger">*</span></label>
+                            <select asp-for="VenueID" class="form-select" asp-items="Model.Venues">
+                                <option value="">-- Select Venue --</option>
+                            </select>
+                            <span asp-validation-for="VenueID" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="LoyalityId" class="form-label fw-semibold">Loyalty Ref<span class="text-danger">*</span></label>
+                            <select asp-for="LoyalityId" class="form-select" asp-items="Model.Loyalities">
+                                <option value="">-- Select Loyalty Reference --</option>
+                            </select>
+                            <span asp-validation-for="LoyalityId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Title" class="form-label fw-semibold">Title<span class="text-danger">*</span></label>
+                            <input asp-for="Title" class="form-control" placeholder="Enter event title" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Category" class="form-label fw-semibold">Category<span class="text-danger">*</span></label>
+                            <input asp-for="Category" class="form-control" placeholder="Music / Drama / Culture" />
+                            <span asp-validation-for="Category" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                            <textarea asp-for="Description" rows="3" class="form-control" placeholder="Brief description..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="StartDateTime" class="form-label fw-semibold">Start<span class="text-danger">*</span></label>
+                            <input asp-for="StartDateTime" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="StartDateTime" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EndDateTime" class="form-label fw-semibold">End<span class="text-danger">*</span></label>
+                            <input asp-for="EndDateTime" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="EndDateTime" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="TicketPrice" class="form-label fw-semibold">Ticket Price (LKR)<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">LKR</span>
+                                <input asp-for="TicketPrice" class="form-control" />
+                            </div>
+                            <span asp-validation-for="TicketPrice" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="TotalTickets" class="form-label fw-semibold">Total Tickets<span class="text-danger">*</span></label>
+                            <input asp-for="TotalTickets" class="form-control" />
+                            <span asp-validation-for="TotalTickets" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="AvailableTickets" class="form-label fw-semibold">Available Tickets</label>
+                            <input asp-for="AvailableTickets" class="form-control" />
+                            <span asp-validation-for="AvailableTickets" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3 form-check mt-4 ps-4">
+                            <input class="form-check-input" asp-for="IsActive" />
+                            <label class="form-check-label fw-semibold" asp-for="IsActive"></label>
+                        </div>
+                    </div>
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn text-white" style="background:@accent"><i class="fa fa-save me-1"></i>Save</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i>Back</a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-light text-muted small">
+                Fields marked with <span class="text-danger">*</span> are required.
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }
