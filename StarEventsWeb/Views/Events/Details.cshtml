@@ -5,7 +5,13 @@
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header text-white d-flex justify-content-between align-items-center" style="background:@primary">
                 <h5 class="mb-0"><i class="fa fa-calendar-day me-2"></i>@Model.Title</h5>
-                <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "Active" : "Inactive")</span>
+                <div class="d-flex gap-2 align-items-center">
+                    <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "Active" : "Inactive")</span>
+                    @if (Model.IsActive && Model.AvailableTickets > 0)
+                    {
+                        <a asp-controller="Checkout" asp-action="BuyNow" asp-route-id="@Model.Id" class="btn btn-sm text-white" style="background:@accent"><i class="fa fa-bolt me-1"></i>Buy Now</a>
+                    }
+                </div>
             </div>
             <div class="card-body">
                 <div class="row g-3">

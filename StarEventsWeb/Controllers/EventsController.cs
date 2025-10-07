@@ -44,6 +44,7 @@ namespace StarEventsWeb.Controllers
         }
 
         // GET: Events/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -53,6 +54,7 @@ namespace StarEventsWeb.Controllers
                 .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ev == null) return NotFound();
+            // Only restrict organizers to their own events; customers can view
             if (User.IsInRole("Event Organizer"))
             {
                 var organizer = await GetOrCreateOrganizerForCurrentUser();

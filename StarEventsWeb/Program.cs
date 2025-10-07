@@ -41,6 +41,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Fix: enable authentication before authorization so [Authorize] works
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -19,22 +19,33 @@ namespace StarEvents.DataAccess.EmailHelper
         {
             var from = _configuration["EmailSettings:From"];
             var smtpServer = _configuration["EmailSettings:SmtpServer"];
-            var port = int.Parse(_configuration["EmailSettings:Port"]!);
+            var portValue = _configuration["EmailSettings:Port"];
             var username = _configuration["EmailSettings:Username"];
             var password = _configuration["EmailSettings:Password"];
 
-            using var message = new MailMessage(from!, email, subject, htmlMessage)
+            if (string.IsNullOrWhiteSpace(smtpServer) || string.IsNullOrWhiteSpace(from))
             {
-                IsBodyHtml = true
-            };
+                return; // email disabled/misconfigured
+            }
 
-            using var client = new SmtpClient(smtpServer, port)
+            var port = 25;
+            int.TryParse(portValue, out port);
+
+            try
             {
-                Credentials = new NetworkCredential(username, password),
-                EnableSsl = true
-            };
-
-            await client.SendMailAsync(message);
+                using var message = new MailMessage(from!, email, subject, htmlMessage) { IsBodyHtml = true };
+                using var client = new SmtpClient(smtpServer, port)
+                {
+                    Credentials = new NetworkCredential(username, password),
+                    EnableSsl = true,
+                    Timeout = 15000 // 15s
+                };
+                await client.SendMailAsync(message);
+            }
+            catch
+            {
+                // swallow to avoid breaking business flows; controller already protects too
+            }
         }
     }
 }

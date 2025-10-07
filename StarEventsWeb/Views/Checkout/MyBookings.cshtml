@@ -1,0 +1,48 @@
+@model IEnumerable<StarEvents.DataAccess.Models.Booking>
+@{ ViewData["Title"] = "My Bookings"; var primary = "#000080"; }
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4" style="color:@primary">My Bookings</h2>
+</div>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="text-white" style="background:@primary">
+                    <tr>
+                        <th>Booking #</th>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th style="width:160px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="6" class="text-center py-4 text-muted">No bookings yet.</td></tr>
+                }
+                else
+                {
+                    foreach (var b in Model)
+                    {
+                        <tr>
+                            <td>#@b.Id</td>
+                            <td>@b.Event?.Title</td>
+                            <td>@Html.DisplayFor(_ => b.Event.StartDateTime)</td>
+                            <td>LKR @b.TotalAmount.ToString("N2")</td>
+                            <td>@b.PaymentStatus</td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Tickets" asp-route-id="@b.Id" class="btn btn-outline-primary"><i class="fa fa-eye"></i> View</a>
+                                    <a asp-action="Qr" asp-route-id="@b.Id" class="btn btn-outline-success"><i class="fa fa-qrcode"></i> QR</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+@model StarEventsWeb.ViewModels.BookingTicketsViewModel
+@{ ViewData["Title"] = "Your Tickets"; var primary = "#000080"; var accent = "#ff6600"; }
+<div class="container py-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="h4 mb-0" style="color:@primary">@Model.EventTitle</h2>
+            <div class="text-muted small">@Model.EventDateText</div>
+        </div>
+        <div>
+            <a asp-controller="Checkout" asp-action="MyBookings" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i>Back</a>
+        </div>
+    </div>
+
+    @if(Model.Count == 1)
+    {
+        var t = Model.Tickets.First();
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <div class="mb-2 text-muted">E-Ticket</div>
+                <div class="d-inline-block p-3 border rounded bg-white">
+                    @Html.Raw(t.Svg)
+                </div>
+                <div class="mt-2">
+                    <a asp-action="Qr" asp-route-id="@Model.BookingId" asp-route-et="@t.ETicketId" class="btn btn-sm btn-outline-primary"><i class="fa fa-download me-1"></i>Download PNG</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @for(int i=0; i<Model.Tickets.Count; i++)
+            {
+                var t = Model.Tickets[i];
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center d-flex flex-column">
+                            <div class="fw-semibold mb-1">Ticket #@t.ETicketId</div>
+                            <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+                                <div class="p-2 border rounded bg-white w-100" style="min-height:180px">@Html.Raw(t.Svg)</div>
+                            </div>
+                            <div class="mt-2">
+                                <a asp-action="Qr" asp-route-id="@Model.BookingId" asp-route-et="@t.ETicketId" class="btn btn-sm btn-outline-primary w-100"><i class="fa fa-download me-1"></i>Download</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
