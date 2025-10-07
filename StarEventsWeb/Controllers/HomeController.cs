@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using StarEvents.DataAccess.Data;
 using StarEvents.DataAccess.Models;
 using StarEventsWeb.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace StarEventsWeb.Controllers
 {
@@ -43,7 +44,7 @@ namespace StarEventsWeb.Controllers
                 .Where(s => s != null && s != "")
                 .Distinct()
                 .OrderBy(s => s)
-                .Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = s, Text = s })
+                .Select(s => new SelectListItem { Value = s, Text = s })
                 .ToListAsync();
 
             vm.Locations = await _context.Venues
@@ -51,7 +52,7 @@ namespace StarEventsWeb.Controllers
                 .Where(s => s != null && s != "")
                 .Distinct()
                 .OrderBy(s => s)
-                .Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = s, Text = s })
+                .Select(s => new SelectListItem { Value = s, Text = s })
                 .ToListAsync();
 
             // Apply filters

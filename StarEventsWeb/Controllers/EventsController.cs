@@ -34,8 +34,7 @@ namespace StarEventsWeb.Controllers
 
             if (User.IsInRole("Event Organizer"))
             {
-                var userId = _userManager.GetUserId(User)!;
-                var organizer = await _context.EventOrganizers.FirstOrDefaultAsync(o => o.UserId == userId);
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
                 if (organizer != null)
                 {
                     query = query.Where(e => e.OrganizerID == organizer.Id);
@@ -54,13 +53,22 @@ namespace StarEventsWeb.Controllers
                 .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ev == null) return NotFound();
-            if (User.IsInRole("Event Organizer") && !await OrganizerOwnsEvent(ev)) return Forbid();
+            if (User.IsInRole("Event Organizer"))
+            {
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
+                if (organizer == null || ev.OrganizerID != organizer.Id) return Forbid();
+            }
             return View(ev);
         }
 
         // GET: Events/Create
         public async Task<IActionResult> Create()
         {
+            if (User.IsInRole("Event Organizer"))
+            {
+                // Ensure profile exists so create view can work smoothly
+                await GetOrCreateOrganizerForCurrentUser();
+            }
             var vm = new EventFormViewModel { IsAdmin = User.IsInRole("Admin") };
             await PopulateDropdowns(vm);
             return View(vm);
@@ -83,23 +91,8 @@ namespace StarEventsWeb.Controllers
             int organizerId;
             if (User.IsInRole("Event Organizer"))
             {
-                var userId = _userManager.GetUserId(User)!;
-                var organizer = await _context.EventOrganizers.FirstOrDefaultAsync(o => o.UserId == userId);
-                if (organizer == null)
-                {
-                    var user = await _userManager.FindByIdAsync(userId);
-                    organizer = new EventOrganizer
-                    {
-                        UserId = userId,
-                        CompanyName = user?.FullName + " Org" ?? "Organizer Company",
-                        ContactPerson = user?.FullName ?? "Organizer",
-                        ContactEmail = user?.Email ?? "noreply@example.com",
-                        ContactPhone = "N/A",
-                        BankAccountDetails = "N/A"
-                    };
-                    _context.EventOrganizers.Add(organizer);
-                    await _context.SaveChangesAsync();
-                }
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
+                if (organizer == null) return Forbid();
                 organizerId = organizer.Id;
             }
             else
@@ -144,7 +137,11 @@ namespace StarEventsWeb.Controllers
             if (id == null) return NotFound();
             var e = await _context.Events.FindAsync(id);
             if (e == null) return NotFound();
-            if (User.IsInRole("Event Organizer") && !await OrganizerOwnsEvent(e)) return Forbid();
+            if (User.IsInRole("Event Organizer"))
+            {
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
+                if (organizer == null || e.OrganizerID != organizer.Id) return Forbid();
+            }
             var vm = new EventFormViewModel
             {
                 Id = e.Id,
@@ -186,10 +183,8 @@ namespace StarEventsWeb.Controllers
 
             if (User.IsInRole("Event Organizer"))
             {
-                var userId = _userManager.GetUserId(User)!;
-                var organizer = await _context.EventOrganizers.FirstOrDefaultAsync(o => o.UserId == userId);
-                if (organizer == null) return Forbid();
-                existing.OrganizerID = organizer.Id;
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
+                if (organizer == null || existing.OrganizerID != organizer.Id) return Forbid();
             }
             else
             {
@@ -230,7 +225,11 @@ namespace StarEventsWeb.Controllers
                 .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ev == null) return NotFound();
-            if (User.IsInRole("Event Organizer") && !await OrganizerOwnsEvent(ev)) return Forbid();
+            if (User.IsInRole("Event Organizer"))
+            {
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
+                if (organizer == null || ev.OrganizerID != organizer.Id) return Forbid();
+            }
             return View(ev);
         }
 
@@ -241,20 +240,44 @@ namespace StarEventsWeb.Controllers
         {
             var ev = await _context.Events.FindAsync(id);
             if (ev == null) return RedirectToAction(nameof(Index));
-            if (User.IsInRole("Event Organizer") && !await OrganizerOwnsEvent(ev)) return Forbid();
+            if (User.IsInRole("Event Organizer"))
+            {
+                var organizer = await GetOrCreateOrganizerForCurrentUser();
+                if (organizer == null || ev.OrganizerID != organizer.Id) return Forbid();
+            }
             _context.Events.Remove(ev);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> EventExists(int id) => await _context.Events.AnyAsync(e => e.Id == id);
-
-        private async Task<bool> OrganizerOwnsEvent(Event ev)
+        private async Task<EventOrganizer?> GetOrCreateOrganizerForCurrentUser()
         {
-            var userId = _userManager.GetUserId(User)!;
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId)) return null;
             var organizer = await _context.EventOrganizers.FirstOrDefaultAsync(o => o.UserId == userId);
-            return organizer != null && ev.OrganizerID == organizer.Id;
+            if (organizer != null) return organizer;
+
+            // Create a minimal profile if user is in role and profile missing
+            if (User.IsInRole("Event Organizer"))
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                organizer = new EventOrganizer
+                {
+                    UserId = userId,
+                    CompanyName = string.IsNullOrWhiteSpace(user?.FullName) ? "Organizer Company" : $"{user.FullName} Org",
+                    ContactPerson = user?.FullName ?? "Organizer",
+                    ContactEmail = user?.Email ?? "noreply@example.com",
+                    ContactPhone = "N/A",
+                    BankAccountDetails = "N/A"
+                };
+                _context.EventOrganizers.Add(organizer);
+                await _context.SaveChangesAsync();
+                return organizer;
+            }
+            return null;
         }
+
+        private async Task<bool> EventExists(int id) => await _context.Events.AnyAsync(e => e.Id == id);
 
         private async Task PopulateDropdowns(EventFormViewModel vm)
         {

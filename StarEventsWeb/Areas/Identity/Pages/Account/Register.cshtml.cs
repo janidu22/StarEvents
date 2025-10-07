@@ -117,6 +117,11 @@ namespace StarEventsWeb.Areas.Identity.Pages.Account
 
             public string RoleName { get; set; }
 
+
+            // Terms acceptance to provide a proper named input for validation
+            [Required(ErrorMessage = "You must agree to the terms.")]
+            [Display(Name = "I agree to the Terms of Service and Privacy Policy")]
+            public bool AcceptTerms { get; set; }
         }
 
 
@@ -134,6 +139,12 @@ namespace StarEventsWeb.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            // explicit server-side enforcement for AcceptTerms
+            if (!Input.AcceptTerms)
+            {
+                ModelState.AddModelError("Input.AcceptTerms", "You must agree to the terms.");
+            }
+
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
